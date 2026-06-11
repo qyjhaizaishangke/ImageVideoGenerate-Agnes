@@ -38,7 +38,7 @@ export default function PromptInput(props: PromptInputProps) {
         placeholder={m.prompt_placeholder()}
         disabled={props.disabled() || props.loading()}
         rows={3}
-        class="w-full min-h-[120px] resize-none bg-transparent
+        class="w-full min-h-30 resize-none bg-transparent
                text-on-surface text-body-lg
                placeholder:text-on-surface-variant
                px-4 pt-4 pb-2 focus:outline-none

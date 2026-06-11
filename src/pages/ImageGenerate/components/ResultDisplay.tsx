@@ -1,4 +1,4 @@
-﻿import { Image, Loader2, AlertCircle } from "lucide-solid";
+import { Image, LoaderCircle, CircleAlert } from "lucide-solid";
 import type { Accessor } from "solid-js";
 import { createM } from "../../../i18n";
 
@@ -36,7 +36,7 @@ export default function ResultDisplay(props: ResultDisplayProps) {
         <div class="flex flex-col items-center gap-3">
           <div class="w-64 h-48 bg-surface-container rounded-corner-lg animate-pulse" />
           <div class="flex items-center gap-2 text-on-surface-variant text-body-md">
-            <Loader2 class="w-4 h-4 animate-spin" />
+            <LoaderCircle class="w-4 h-4 animate-spin" />
             <span>{m.result_generating()}</span>
           </div>
         </div>
@@ -69,7 +69,7 @@ export default function ResultDisplay(props: ResultDisplayProps) {
         <div class="flex flex-col items-center gap-3 max-w-md text-center">
           <div class="flex items-center gap-2 bg-error-container
                       rounded-corner-md px-4 py-3">
-            <AlertCircle class="w-5 h-5 text-error shrink-0" />
+            <CircleAlert class="w-5 h-5 text-error shrink-0" />
             <span class="text-on-error-container text-body-md">
               {props.error() || m.result_unknownError()}
             </span>

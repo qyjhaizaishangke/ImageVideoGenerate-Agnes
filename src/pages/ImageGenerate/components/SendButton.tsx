@@ -1,4 +1,4 @@
-﻿import { SendHorizonal, Loader2 } from "lucide-solid";
+import { LoaderCircle, SendHorizontal } from "lucide-solid";
 import type { Accessor } from "solid-js";
 import { createM } from "../../../i18n";
 
@@ -21,9 +21,9 @@ export default function SendButton(props: SendButtonProps) {
       title={m.common_send()}
     >
       {props.loading() ? (
-        <Loader2 class="w-5 h-5 animate-spin" />
+        <LoaderCircle class="w-5 h-5 animate-spin" />
       ) : (
-        <SendHorizonal class="w-5 h-5" />
+        <SendHorizontal class="w-5 h-5" />
       )}
     </button>
   );

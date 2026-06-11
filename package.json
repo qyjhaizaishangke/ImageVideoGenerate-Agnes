@@ -7,9 +7,9 @@
     "scripts": {
         "dev": "concurrently -n backend,frontend -c blue,green \"bun run dev:backend\" \"bun run dev:fontend\"",
         "dev:fontend": "vite",
-    "dev:backend": "bun run src-back/index.ts",
-    "gen:i18n": "bun run scripts/gen_messages.mjs",
-    "build:fontend": "vite build"
+        "dev:backend": "bun run src-back/index.ts",
+        "gen:i18n": "bun run scripts/gen_messages.mjs",
+        "build:fontend": "vite build"
     },
     "devDependencies": {
         "@inlang/paraglide-js-adapter-vite": "^1.2.40",
