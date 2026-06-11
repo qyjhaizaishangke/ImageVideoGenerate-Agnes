@@ -1,0 +1,5 @@
+﻿interface:
+  display_name: "Material Design"
+  short_description: "Build UI with MD3 tokens, theming, and component patterns."
+  brand_color: "#6750a4"
+  default_prompt: "Use $material-design to style this component with the project's MD3 design tokens."

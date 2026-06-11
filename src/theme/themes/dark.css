@@ -1,0 +1,121 @@
+/* ============================================================
+   Dark Theme — explicit
+   Usage: <html data-theme="dark">
+   ============================================================ */
+
+html[data-theme="dark"] {
+  /* ---- Color: Primary ---- */
+  --md-sys-color-primary: #d0bcff;
+  --md-sys-color-on-primary: #381e72;
+  --md-sys-color-primary-container: #4f378b;
+  --md-sys-color-on-primary-container: #eaddff;
+
+  /* ---- Color: Secondary ---- */
+  --md-sys-color-secondary: #ccc2dc;
+  --md-sys-color-on-secondary: #332d41;
+  --md-sys-color-secondary-container: #4a4458;
+  --md-sys-color-on-secondary-container: #e8def8;
+
+  /* ---- Color: Tertiary ---- */
+  --md-sys-color-tertiary: #efb8c8;
+  --md-sys-color-on-tertiary: #492532;
+  --md-sys-color-tertiary-container: #633b48;
+  --md-sys-color-on-tertiary-container: #ffd8e4;
+
+  /* ---- Color: Error ---- */
+  --md-sys-color-error: #f2b8b5;
+  --md-sys-color-on-error: #601410;
+  --md-sys-color-error-container: #8c1d18;
+  --md-sys-color-on-error-container: #f9dedc;
+
+  /* ---- Color: Surface ---- */
+  --md-sys-color-surface-dim: #141218;
+  --md-sys-color-surface: #141218;
+  --md-sys-color-surface-bright: #3b383e;
+  --md-sys-color-surface-container-lowest: #0f0d14;
+  --md-sys-color-surface-container-low: #1d1b20;
+  --md-sys-color-surface-container: #211f26;
+  --md-sys-color-surface-container-high: #2b2930;
+  --md-sys-color-surface-container-highest: #36343b;
+  --md-sys-color-on-surface: #e6e0e9;
+  --md-sys-color-on-surface-variant: #cac4d0;
+  --md-sys-color-outline: #938f99;
+  --md-sys-color-outline-variant: #49454f;
+  --md-sys-color-inverse-surface: #e6e0e9;
+  --md-sys-color-inverse-on-surface: #322f37;
+  --md-sys-color-inverse-primary: #6750a4;
+
+  /* ---- Typography ---- */
+  --md-sys-typescale-display-large: 400 3.5625rem/4rem "Roboto", sans-serif;
+  --md-sys-typescale-display-medium: 400 2.8125rem/3.25rem "Roboto", sans-serif;
+  --md-sys-typescale-display-small: 400 2.25rem/2.75rem "Roboto", sans-serif;
+  --md-sys-typescale-headline-large: 400 2rem/2.5rem "Roboto", sans-serif;
+  --md-sys-typescale-headline-medium: 400 1.75rem/2.25rem "Roboto", sans-serif;
+  --md-sys-typescale-headline-small: 400 1.5rem/2rem "Roboto", sans-serif;
+  --md-sys-typescale-title-large: 400 1.375rem/1.75rem "Roboto", sans-serif;
+  --md-sys-typescale-title-medium: 500 1rem/1.5rem "Roboto", sans-serif;
+  --md-sys-typescale-title-small: 500 0.875rem/1.25rem "Roboto", sans-serif;
+  --md-sys-typescale-label-large: 500 0.875rem/1.25rem "Roboto", sans-serif;
+  --md-sys-typescale-label-medium: 500 0.75rem/1rem "Roboto", sans-serif;
+  --md-sys-typescale-label-small: 500 0.6875rem/1rem "Roboto", sans-serif;
+  --md-sys-typescale-body-large: 400 1rem/1.5rem "Roboto", sans-serif;
+  --md-sys-typescale-body-medium: 400 0.875rem/1.25rem "Roboto", sans-serif;
+  --md-sys-typescale-body-small: 400 0.75rem/1rem "Roboto", sans-serif;
+
+  /* ---- Font Size (for Tailwind text-* utilities) ---- */
+  --md-sys-font-display-lg: 3.5625rem/4rem;
+  --md-sys-font-display-md: 2.8125rem/3.25rem;
+  --md-sys-font-display-sm: 2.25rem/2.75rem;
+  --md-sys-font-headline-lg: 2rem/2.5rem;
+  --md-sys-font-headline-md: 1.75rem/2.25rem;
+  --md-sys-font-headline-sm: 1.5rem/2rem;
+  --md-sys-font-title-lg: 1.375rem/1.75rem;
+  --md-sys-font-title-md: 1rem/1.5rem;
+  --md-sys-font-title-sm: 0.875rem/1.25rem;
+  --md-sys-font-label-lg: 0.875rem/1.25rem;
+  --md-sys-font-label-md: 0.75rem/1rem;
+  --md-sys-font-label-sm: 0.6875rem/1rem;
+  --md-sys-font-body-lg: 1rem/1.5rem;
+  --md-sys-font-body-md: 0.875rem/1.25rem;
+  --md-sys-font-body-sm: 0.75rem/1rem;
+
+  /* ---- Shape ---- */
+  --md-sys-shape-corner-none: 0rem;
+  --md-sys-shape-corner-extra-small: 0.25rem;
+  --md-sys-shape-corner-small: 0.5rem;
+  --md-sys-shape-corner-medium: 0.75rem;
+  --md-sys-shape-corner-large: 1rem;
+  --md-sys-shape-corner-extra-large: 1.75rem;
+  --md-sys-shape-corner-full: 9999px;
+
+  /* ---- Elevation ---- */
+  --md-sys-elevation-level0: none;
+  --md-sys-elevation-level1:
+    0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.08), 0 0.0625rem 0.125rem rgba(0, 0, 0, 0.12);
+  --md-sys-elevation-level2:
+    0 0.1875rem 0.375rem rgba(0, 0, 0, 0.08), 0 0.1875rem 0.375rem rgba(0, 0, 0, 0.12);
+  --md-sys-elevation-level3:
+    0 0.625rem 1.25rem rgba(0, 0, 0, 0.08), 0 0.375rem 0.375rem rgba(0, 0, 0, 0.12);
+  --md-sys-elevation-level4:
+    0 0.875rem 2.5rem rgba(0, 0, 0, 0.1), 0 0.625rem 0.625rem rgba(0, 0, 0, 0.12);
+  --md-sys-elevation-level5:
+    0 1.75rem 5rem rgba(0, 0, 0, 0.12), 0 0.75rem 0.875rem rgba(0, 0, 0, 0.12);
+
+  /* ---- Motion ---- */
+  --md-sys-motion-duration-short1: 50ms;
+  --md-sys-motion-duration-short2: 100ms;
+  --md-sys-motion-duration-short3: 150ms;
+  --md-sys-motion-duration-short4: 200ms;
+  --md-sys-motion-duration-medium1: 250ms;
+  --md-sys-motion-duration-medium2: 300ms;
+  --md-sys-motion-duration-medium3: 350ms;
+  --md-sys-motion-duration-medium4: 400ms;
+  --md-sys-motion-duration-long1: 450ms;
+  --md-sys-motion-duration-long2: 500ms;
+  --md-sys-motion-duration-long3: 550ms;
+  --md-sys-motion-duration-long4: 600ms;
+  --md-sys-motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  --md-sys-motion-easing-emphasized: cubic-bezier(0.05, 0.7, 0.1, 1);
+  --md-sys-motion-easing-decelerate: cubic-bezier(0, 0, 0, 1);
+  --md-sys-motion-easing-accelerate: cubic-bezier(0.3, 0, 1, 1);
+}

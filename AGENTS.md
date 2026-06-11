@@ -1,129 +1,178 @@
 # AGENTS.md
 
-## 项目结构
+## Project Structure
 
 ```
 ImageVideoGenerate-Agnes/
-├── src/                        # 前端代码 (Solid.js)
-│   ├── components/             # UI 组件
-│   ├── pages/                  # 页面路由
-│   ├── index.tsx              # 入口文件
-│   ├── index.css              # 全局样式
-│   └── ...
-├── src-back/                   # 后端服务 (Elysia)
-│   ├── index.ts               # 入口文件
-│   └── ...
-├── Dockerfile.back             # Docker 镜像
-├── AGENTS.md                   # 项目文档
-├── GOAL.md                     # 项目需求
-├── package.json                # 根 package.json
-├── vite.config.ts             # Vite 配置
+├── src/                        # Frontend (Solid.js)
+│   ├── components/             # Reusable UI components
+│   │   └── Menu/               #   Sidebar navigation + theme toggle
+│   ├── pages/                  # Page-level components
+│   │   ├── ImageGenerate/      #   Image generation page
+│   │   │   └── components/     #     Page-specific sub-components
+│   │   │       ├── ImageUpload.tsx
+│   │   │       ├── ModelSelect.tsx
+│   │   │       ├── PromptInput.tsx
+│   │   │       ├── ResultDisplay.tsx
+│   │   │       └── SendButton.tsx
+│   │   └── VideoGenerate/      #   Video generation page (placeholder)
+│   ├── routes/                 # Frontend route definitions
+│   │   └── index.tsx
+│   ├── theme/                  # Theme system (Tailwind + MD3 tokens)
+│   │   ├── theme.css           #   Theme entry, maps MD3 vars to Tailwind
+│   │   ├── utils.ts            #   Theme switch helpers (setTheme / clearThemeOverride)
+│   │   └── themes/             #   Light/dark token definitions
+│   │       ├── light.css
+│   │       └── dark.css
+│   ├── index.tsx               # Frontend entry (theme init + mount)
+│   ├── index.css               # Global styles (body bg-surface, text-on-surface)
+│   └── Layout.tsx              # Root layout (Menu sidebar + <main>)
+├── src-back/                   # Backend (Elysia + Bun)
+│   ├── index.ts                # Server entry (CORS, routes, port 3001)
+│   ├── routes/                 # API route definitions
+│   │   ├── ImageGenerateRoute.ts   # POST /api/image/generate
+│   │   └── VideoGenerateRoute.ts   # (empty stub)
+│   └── service/                # Business logic / AI API calls
+│       └── imageService.ts     #   Agnes Image API proxy (base64 mode)
+├── plans/                      # Development plans
+│   └── image-generate-page.md  #   Image page spec + Agnes API docs
+├── index.html                  # HTML entry (FOWT prevention via blocking <script>)
+├── package.json                # Dependencies + scripts (Bun)
+├── vite.config.ts              # Vite config (port 3000, Tailwind plugin)
+├── tsconfig.json               # TypeScript root config
+├── tsconfig.app.json           #   Frontend TS config (jsx: preserve, jsxImportSource: solid-js)
+├── tsconfig.node.json          #   Backend TS config
+├── .env.example                # Environment variable template
+├── AGENTS.md                   # Project documentation (this file)
+├── GOAL.md                     # Project requirements
+├── .gitignore
 ├── bun.lock
 └── README.md
 ```
 
-## 技术规范
+## Tech Specs
 
-- **前端 (src/)**: Solid.js + TypeScript
-  - 路由：Solid Router
-  - 状态管理：Solid Signals / Store
-  - 构建工具：Vite
-  - 样式：CSS Modules + Tailwind CSS
+- **Frontend (src/)**: Solid.js + TypeScript
+  - Router: Solid Router v0.16 (`src/routes/`), RouteDefinition with nested children layout
+  - State: Solid Signals
+  - Build: Vite (port 3000)
+  - Styles: Tailwind CSS v4 + custom theme tokens (`src/theme/`)
+  - Theme: `data-theme` attribute on `<html>`, priority: manual > system preference
+  - Icons: lucide-solid
 
-- **后端 (src-back/)**: Elysia + TypeScript (Bun 运行时)
-  - API 设计：RESTful 使用 Elysia 路由装饰器
-  - **鉴权：无** (去掉鉴权)
-  - 文档：Swagger (Elysia OpenAPI)
-  - **静态文件**: `/` 路径返回前端构建的 `dist/index.html`
+- **Backend (src-back/)**: Elysia + TypeScript (Bun runtime)
+  - API: RESTful via Elysia route decorators
+  - **Auth: none** (no JWT / authentication layer)
+  - CORS: manual headers in `onRequest` hook (no `@elysiajs/cors` dependency)
+  - **Static files**: `/` serves built `dist/index.html` (prod only; dev uses Vite)
 
-- **AI 模型**: 通过 Agnes AI API 调用
-  - 图片生成：[Agnes Image 2.1 Flash](https://agnes-ai.com/doc/agnes-image-21-flash)
-  - 视频生成：[Agnes Video V2.0](https://agnes-ai.com/doc/agnes-video-v20)
+- **AI Models**: via Agnes AI API (`https://apihub.agnes-ai.com`)
+  - [Agnes Image 2.0 Flash](https://agnes-ai.com/doc/agnes-image-20-flash)
+  - [Agnes Image 2.1 Flash](https://agnes-ai.com/doc/agnes-image-21-flash)
+  - [Agnes Video V2.0](https://agnes-ai.com/doc/agnes-video-v20)
 
-## 代码规范
+## Code Conventions
 
-1. 所有代码使用 TypeScript，严格模式 (strict: true)
-2. 前端代码组织在 `src/components/` 和 `src/pages/`
-3. 后端代码在 `src-back/`，路由在 `src-back/routes/`，业务逻辑在 `src-back/services/`
-4. 敏感信息通过环境变量注入，密钥不要直接写入代码
-5. **所有操作使用 Bun 作为包管理器**
+1. All code in TypeScript, strict mode (`strict: true`)
+2. Frontend organized in `src/components/`, `src/pages/`, `src/routes/`
+3. Backend: routes in `src-back/routes/`, business logic in `src-back/service/`
+4. Sensitive info via environment variables (`.env`), never hardcoded
+5. **Use Bun for all package management and scripts**
+6. Build tool: Vite with Rolldown (default for Vite 8.x)
+7. Theme: data-theme attribute driven, never class-based; priority: manual > system preference
+8. i18n: All user-facing text via createM() - import { createM } from i18n, const m = createM(), use {m.key()} directly in JSX (reactive, no t() wrapper)
 
-## 部署架构
 
-**关键点**: 后端 `/` 路径返回前端构建的 `dist/index.html`
+## Deployment Architecture
 
-实现方式:
-1. 前端构建 `src/` → `dist/index.html`
-2. 构建产物复制到 `src-back/dist/`
-3. 后端 `/` 路由读取并返回 `dist/index.html`
-4. 其他 `/` 请求重定向到 `index.html` (支持 SPA 路由)
+**Key point**: Backend `/` returns built `dist/index.html` in production.
 
-## 目录职责
+Implementation:
+1. Build frontend `src/` -> `dist/`
+2. Copy build output to `src-back/dist/`
+3. Backend `/` reads and returns `dist/index.html`
+4. Non-`/api/*` paths redirect to `index.html` (SPA routing support)
 
-| 目录 | 职责 |
-|------|------|
-| src/ | 前端 Solid.js 应用源码 |
-| src/components/ | 可复用 UI 组件 |
-| src/pages/ | 页面路由组件 |
-| src/index.tsx | 前端入口文件 |
-| src/index.css | 全局样式 |
-| src-back/ | 后端 Elysia 服务源码 |
-| src-back/index.ts | 后端入口文件 |
-| src-back/routes/ | API 路由定义 |
-| src-back/services/ | 业务逻辑 / API 调用 |
-| ./Dockerfile.back | Docker 镜像构建 |
+## Directory Responsibilities
 
-## 部署方式
+| Directory | Responsibility |
+|-----------|---------------|
+| src/ | Frontend Solid.js application source |
+| src/components/ | Reusable UI components |
+| src/pages/ | Page route components |
+| src/i18n/ | i18n system (LanguageProvider, createM, useLanguage) |
+| src/paraglide/ | Translation messages (hand-written Paraglide-style runtime) |
+| src/routes/ | Frontend route config (Solid Router) |
+| src/theme/ | Theme styles (Tailwind + custom CSS tokens) |
+| src/theme/themes/ | Light/dark token definitions |
+| src/Layout.tsx | Root layout component (Menu + page content) |
+| src/index.css | Global styles (body background) |
+| src-back/ | Backend Elysia server source |
+| src-back/index.ts | Backend entry (CORS + routes, port 3001) |
+| src-back/routes/ | API route definitions |
+| src-back/service/ | Business logic / AI API calls |
+| plans/ | Development plan documents |
 
-### Docker 容器化部署
+## Deployment
 
-**项目采用 Docker 容器化部署，单一容器部署 (Elysia 同时提供 API 和静态文件)：**
+### Docker (pending)
 
-1. **单一容器**: Elysia 服务
-   - 构建 `src-back/` 包含 API 和前端构建产物
-   - `/api/*` 路径处理 API 请求
-   - **`/` 和其他所有路径返回 `src-back/dist/index.html`** (SPA 路由支持)
+Project uses Docker containerized deployment — single container (Elysia serves API + static files):
+
+1. **Single container**: Elysia
+   - `/api/*` handles API requests
+   - **`/` and all other paths return `src-back/dist/index.html`** (SPA routing)
 
 ```bash
-# 构建所有镜像
-bun run docker:build
-
-# 启动服务
-bun run docker:up
-
-# 查看日志
-bun run docker:logs
-
-# 停止服务
-bun run docker:down
-
-# 一键启动
-bun run docker:start
+# Build frontend (output to dist/)
+bun run build:fontend
 ```
 
-### 本地开发
+> `Dockerfile.back` and `.dockerignore` still need to be created.
+
+### Local Development
 
 ```bash
-# 安装依赖
+# Install dependencies
 bun install
 
-# 启动前端开发服务器
-bun run dev:frontend
+# Start both frontend + backend (development mode)
+bun run dev
 
-# 启动后端开发服务器
+# Frontend only
+bun run dev:fontend
+
+# Backend only
 bun run dev:backend
+
+# Build frontend
+bun run build:fontend
 ```
 
-### 构建流程
+### Scripts
 
-```bash
-# 构建前后端（自动复制 index.html 到后端）
-bun run build
-```
+| Script | Purpose |
+|--------|---------|
+| `bun run dev` | Concurrently start frontend (Vite) + backend (Elysia) |
+| `bun run dev:fontend` | Vite dev server on port 3000 |
+| `bun run dev:backend` | Elysia server on port 3001 (`bun run src-back/index.ts`) |
+| `bun run build:fontend` | Build frontend to `dist/` |
 
-## 注意事项
+## Environment Variables
 
-- 后端 `/` 路径返回前端页面 `/api/*` 路径处理 API 请求
-- 图片/视频生成是异步任务，支持查询、WebSocket 回调
-- 文件存储使用本地磁盘或 S3，通过 API 提供上传/下载
-- Docker 镜像构建产物需 `.dockerignore` 排除不必要的文件
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `AGNES_API_KEY` | Yes | Agnes AI API key (get from https://agnes-ai.com) |
+| `BACKEND_PORT` | No | Backend port (default: 3001) |
+
+Copy `.env.example` to `.env` and fill in your API key before running.
+
+## Notes
+
+- Backend `/` serves frontend page in production; `/api/*` handles API requests
+- **Agnes Image API (`/v1/images/generations`) is synchronous** — returns `{ data: [{ b64_json }] }` directly, no taskId polling needed
+- Backend uses `return_base64: true` for base64 image data transfer
+- Video generation: API details TBD, may be async
+- File storage: local disk, served via API
+- Docker deployment pending: needs `Dockerfile.back` and `.dockerignore`
+- `moduleResolution: "nodenext"` — all relative imports in `src-back/` require `.ts` extensions (with `allowImportingTsExtensions: true`)

@@ -1,27 +1,35 @@
 {
-  "name": "imagevideogenerate-agnes",
-  "version": "1.0.0",
-  "module": "index.ts",
-  "type": "module",
-  "private": true,
-  "scripts": {
-    "dev": "vite && bun run src-back/index.ts",
-    "build": "tsc -p tsconfig.node.json && vite build",
-    "preview": "vite preview"
-  },
-  "devDependencies": {
-    "@types/bun": "^1.3.14",
-    "vite": "^8.0.16",
-    "vite-plugin-solid": "^2.11.12"
-  },
-  "peerDependencies": {
-    "typescript": "^6.0.3"
-  },
-  "dependencies": {
-    "@solidjs/router": "^0.16.1",
-    "@tailwindcss/vite": "^4.3.0",
-    "elysia": "^1.4.28",
-    "solid-js": "^1.9.13",
-    "tailwindcss": "^4.3.0"
-  }
+    "name": "imagevideogenerate-agnes",
+    "version": "1.0.0",
+    "module": "index.ts",
+    "type": "module",
+    "private": true,
+    "scripts": {
+        "dev": "concurrently -n backend,frontend -c blue,green \"bun run dev:backend\" \"bun run dev:fontend\"",
+        "dev:fontend": "vite",
+    "dev:backend": "bun run src-back/index.ts",
+    "gen:i18n": "bun run scripts/gen_messages.mjs",
+    "build:fontend": "vite build"
+    },
+    "devDependencies": {
+        "@inlang/paraglide-js-adapter-vite": "^1.2.40",
+        "@types/bun": "^1.3.14",
+        "concurrently": "^10.0.3",
+        "vite": "^8.0.16",
+        "vite-plugin-solid": "^2.11.12"
+    },
+    "peerDependencies": {
+        "typescript": "^6.0.3"
+    },
+    "dependencies": {
+        "@inlang/paraglide-js": "^2.18.2",
+        "@inlang/plugin-m-function-matcher": "^2.2.6",
+        "@inlang/plugin-message-format": "^4.4.0",
+        "@solidjs/router": "^0.16.1",
+        "@tailwindcss/vite": "^4.3.0",
+        "elysia": "^1.4.28",
+        "lucide-solid": "^1.17.0",
+        "solid-js": "^1.9.13",
+        "tailwindcss": "^4.3.0"
+    }
 }

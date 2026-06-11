@@ -1,0 +1,84 @@
+/* ============================================================
+   Material Design 3 — Design Tokens Entry Point
+   Imports theme variants and registers Tailwind utilities.
+   ============================================================ */
+
+@import "./themes/light.css";
+@import "./themes/dark.css";
+
+/* ============================================================
+   Tailwind CSS v4 @theme — maps design tokens to utilities
+   Usage: text-primary, bg-surface, shadow-elevation-1, etc.
+   ============================================================ */
+@theme {
+  /* ---- Colors ---- */
+  --color-primary: var(--md-sys-color-primary);
+  --color-on-primary: var(--md-sys-color-on-primary);
+  --color-primary-container: var(--md-sys-color-primary-container);
+  --color-on-primary-container: var(--md-sys-color-on-primary-container);
+  --color-secondary: var(--md-sys-color-secondary);
+  --color-on-secondary: var(--md-sys-color-on-secondary);
+  --color-secondary-container: var(--md-sys-color-secondary-container);
+  --color-on-secondary-container: var(--md-sys-color-on-secondary-container);
+  --color-tertiary: var(--md-sys-color-tertiary);
+  --color-on-tertiary: var(--md-sys-color-on-tertiary);
+  --color-tertiary-container: var(--md-sys-color-tertiary-container);
+  --color-on-tertiary-container: var(--md-sys-color-on-tertiary-container);
+  --color-error: var(--md-sys-color-error);
+  --color-on-error: var(--md-sys-color-on-error);
+  --color-error-container: var(--md-sys-color-error-container);
+  --color-on-error-container: var(--md-sys-color-on-error-container);
+  --color-surface-dim: var(--md-sys-color-surface-dim);
+  --color-surface: var(--md-sys-color-surface);
+  --color-surface-bright: var(--md-sys-color-surface-bright);
+  --color-surface-container-lowest: var(
+    --md-sys-color-surface-container-lowest
+  );
+  --color-surface-container-low: var(--md-sys-color-surface-container-low);
+  --color-surface-container: var(--md-sys-color-surface-container);
+  --color-surface-container-high: var(--md-sys-color-surface-container-high);
+  --color-surface-container-highest: var(
+    --md-sys-color-surface-container-highest
+  );
+  --color-on-surface: var(--md-sys-color-on-surface);
+  --color-on-surface-variant: var(--md-sys-color-on-surface-variant);
+  --color-outline: var(--md-sys-color-outline);
+  --color-outline-variant: var(--md-sys-color-outline-variant);
+  --color-inverse-surface: var(--md-sys-color-inverse-surface);
+  --color-inverse-on-surface: var(--md-sys-color-inverse-on-surface);
+  --color-inverse-primary: var(--md-sys-color-inverse-primary);
+
+  /* ---- Border Radius ---- */
+  --radius-corner-none: var(--md-sys-shape-corner-none);
+  --radius-corner-xs: var(--md-sys-shape-corner-extra-small);
+  --radius-corner-sm: var(--md-sys-shape-corner-small);
+  --radius-corner-md: var(--md-sys-shape-corner-medium);
+  --radius-corner-lg: var(--md-sys-shape-corner-large);
+  --radius-corner-xl: var(--md-sys-shape-corner-extra-large);
+  --radius-corner-full: var(--md-sys-shape-corner-full);
+
+  /* ---- Shadows ---- */
+  --shadow-elevation-0: var(--md-sys-elevation-level0);
+  --shadow-elevation-1: var(--md-sys-elevation-level1);
+  --shadow-elevation-2: var(--md-sys-elevation-level2);
+  --shadow-elevation-3: var(--md-sys-elevation-level3);
+  --shadow-elevation-4: var(--md-sys-elevation-level4);
+  --shadow-elevation-5: var(--md-sys-elevation-level5);
+
+  /* ---- Typography (font-size + line-height) ---- */
+  --font-size-display-lg: var(--md-sys-font-display-lg);
+  --font-size-display-md: var(--md-sys-font-display-md);
+  --font-size-display-sm: var(--md-sys-font-display-sm);
+  --font-size-headline-lg: var(--md-sys-font-headline-lg);
+  --font-size-headline-md: var(--md-sys-font-headline-md);
+  --font-size-headline-sm: var(--md-sys-font-headline-sm);
+  --font-size-title-lg: var(--md-sys-font-title-lg);
+  --font-size-title-md: var(--md-sys-font-title-md);
+  --font-size-title-sm: var(--md-sys-font-title-sm);
+  --font-size-label-lg: var(--md-sys-font-label-lg);
+  --font-size-label-md: var(--md-sys-font-label-md);
+  --font-size-label-sm: var(--md-sys-font-label-sm);
+  --font-size-body-lg: var(--md-sys-font-body-lg);
+  --font-size-body-md: var(--md-sys-font-body-md);
+  --font-size-body-sm: var(--md-sys-font-body-sm);
+}

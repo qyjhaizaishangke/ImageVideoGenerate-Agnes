@@ -1,0 +1,5 @@
+﻿interface:
+  display_name: "Component Generator"
+  short_description: "Generate Solid.js components with MD3 design tokens."
+  brand_color: "#6750a4"
+  default_prompt: "Use `$component-generator` to create a new Solid.js component following Material Design 3."

@@ -1,138 +1,197 @@
-# GOAL.md
+ # GOAL.md
 
-## 项目目标
+ ## Project Goal
 
-构建一个图片/视频生成网站，通过 Agnes AI API 调用
+ Build an image/video generation web application powered by Agnes AI API.
 
-- **Agnes Image 2.1 Flash**: 生成图片
-- **Agnes Video V2.0**: AI 视频生成
+ - **Agnes Image 2.0 Flash**: Text-to-Image / Image-to-Image / Multi-image composition / Image editing
+ - **Agnes Image 2.1 Flash**: Text-to-Image / Image-to-Image, optimized for information density
+ - **Agnes Video V2.0**: AI video generation
 
-## 技术栈
+ ## Tech Stack
 
-- **前端**: Solid.js + TypeScript + Vite
-- **后端**: Elysia + TypeScript (Bun 运行时)
-- **AI 服务**: Agnes AI API
-- **部署**: Docker 容器化部署 (单一 Elysia 容器)
+ - **Frontend**: Solid.js + TypeScript + Vite (port 3000)
+ - **Backend**: Elysia + TypeScript (Bun runtime, port 3001)
+ - **AI Service**: Agnes AI API (`https://apihub.agnes-ai.com`)
+ - **Deployment**: Docker single-container (pending)
 
-## 功能规划
+ ## Feature Plan
 
-### 核心功能
-- [ ] 图片生成功能
-  - [ ] 文生图片 (Text-to-Image)
-  - [ ] 图生图片 (Image-to-Image)
-    - [ ] Base64 图片传输
-    - [ ] 图片风格调整
-    - [ ] 图片参数修改（宽高、步数等）
-    - [ ] 生成结果预览/下载
-  - [ ] 图片转视频
-  - [ ] 生成结果预览/下载
-- [ ] 视频生成功能
-  - [ ] 文生视频 (Text-to-Video)
-  - [ ] 图片转视频 (Image-to-Video)
-  - [ ] 生成结果实时通知
-  - [ ] 生成结果预览/下载
+ ### Core Features
+ - [x] **Image Generation** -- Phase 1
+   - [x] Text-to-Image (base64 mode, `POST /api/image/generate`)
+   - [x] Model selection (Image 2.0 Flash / Image 2.1 Flash)
+   - [ ] Image-to-Image (Phase 2 -- ImageUpload base64 support)
+   - [x] Result preview (idle / loading / success / error states)
+ - [x] **i18n** -- English / Chinese language switching (en/zh, Paraglide-style)
+ - [x] **Theme** -- Light / Dark / Auto (system preference + manual toggle)
+ - [ ] **Settings page** -- Centralized theme toggle + language switcher + API key (planned)
+ - [ ] **Video Generation**
+   - [ ] Text-to-Video
+   - [ ] Image-to-Video
+   - [ ] Progress notification
+   - [ ] Result preview / download
 
-### 非功能性需求
-- [ ] 异步任务处理机制
-- [ ] 生成状态查询 / WebSocket 通知
-- [ ] 文件存储 (本地磁盘 / S3)
-- [ ] API 文档自动生成 (OpenAPI)
-- [ ] 容器化部署 (Docker)
-- [ ] **鉴权：已去掉** (无 JWT/认证)
+ ### Non-Functional
+ - [x] Agnes Image API thin proxy (sync interface, no taskId polling)
+ - [x] Base64 image transfer (`return_base64: true`)
+ - [ ] File storage (local disk)
+ - [ ] API documentation (OpenAPI / Swagger)
+ - [ ] Containerized deployment (Docker)
+ - [x] Frontend routing + Menu navigation component
 
-## 项目状态
+ ## Project Status
 
-| 阶段 | 状态 | 说明 |
-|------|------|------|
-| 项目启动 | ✅ 已完成 | 创建 src/ 和 src-back/ 目录及 AGENTS.md / GOAL.md |
-| 后端架构搭建 | ? 未开始 | 搭建 Elysia 服务、路由、中间件 |
-| 前端架构搭建 | ? 未开始 | 搭建 Solid.js 应用、路由、状态管理 |
-| API 接口 | ? 未开始 | 对接 Agnes AI API(图片 + 视频) |
-| 核心功能开发 | ? 未开始 | 实现图片/视频生成功能 |
-| 测试优化 | ? 未开始 | 单元测试、集成测试、性能优化 |
+ | Phase | Status | Notes |
+ |-------|--------|-------|
+ | Project init | Done | `src/` + `src-back/` directories, AGENTS.md / GOAL.md |
+ | Frontend scaffold | Done | Solid.js + Tailwind CSS v4 + Router + Theme + Menu |
+ | Backend scaffold | Done | Elysia server + CORS + route skeleton |
+ | Dev plans | Done | Image page, i18n, settings page specs |
+ | Image page UI | Done | PromptInput, ModelSelect, ImageUpload, SendButton, ResultDisplay |
+ | Image API (backend) | Done | `POST /api/image/generate` -> Agnes `/v1/images/generations` proxy |
+ | Text-to-Image E2E | Done | Full flow: prompt -> backend -> Agnes -> base64 -> frontend display |
+ | i18n (Paraglide) | Done | en/zh, LanguageProvider, createM, 23 message keys |
+ | Theme system | Done | `data-theme` attribute, manual > system, 3 modes (Light/Dark/Auto) |
+ | Settings page | Pending | Plan: `plans/settings-page.md` -- theme + language + API key placeholder |
+ | Image-to-Image | Pending | Phase 2 -- wire ImageUpload base64 to API |
+ | Video generation | Pending | Backend route + service + frontend page |
+ | Docker deployment | Pending | `Dockerfile.back` + `.dockerignore` |
 
-## 部署架构
+ ## API Design
 
-### Docker 容器化 (单一 Elysia 容器)
+ ### Image Generation
 
-```
-┌─────────────────────────────────────────────────────┐
-│                  Docker Compose                      │
-│  ┌─────────────────────────────────────────┐        │
-│  │         Backend (Elysia + Bun)          │        │
-│  │                                         │        │
-│  │  / → index.html (SPA 路由)              │        │
-│  │  /api/* → API 处理                      │        │
-│  │                                         │        │
-│  │  Ports: 3000:3000                       │        │
-│  └─────────────────────────────────────────┘        │
-└─────────────────────────────────────────────────────┘
-```
+ ```
+ POST /api/image/generate
+ ```
 
-### 后端静态文件服务
+ Agnes Image API (`/v1/images/generations`) is synchronous -- returns `{ data: [{ b64_json }] }` directly. Backend acts as thin proxy: validates request, forwards to Agnes, returns base64 image data.
 
-**关键点**: 后端 `/` 路径返回前端构建的 `dist/index.html`
+ **Request:**
+ ```json
+ {
+   "model": "agnes-image-2.0-flash",
+   "prompt": "A scenic mountain landscape at sunset",
+   "size": "1024x768"
+ }
+ ```
 
-实现方式:
-1. 前端构建 `src/` -> `dist/index.html`
-2. 构建产物复制到 `src-back/dist/`
-3. 后端 `/` 路由读取并返回 `dist/index.html`
-4. 其他 `/` 请求重定向到 `index.html` (支持 SPA 路由)
+ **Response (success):**
+ ```json
+ {
+   "imageBase64": "iVBORw0KGgo..."
+ }
+ ```
 
-### Docker Compose 配置
+ **Response (error):**
+ ```json
+ {
+   "error": "AGNES_API_KEY environment variable is not set"
+ }
+ ```
 
-```yaml
-version: '3.8'
+ > Base64 mode (`return_base64: true`) is used instead of URL mode. Frontend prepends `data:image/png;base64,` before rendering.
+ >
+ > Image-to-Image (Phase 2) will add an optional `image` field with base64 data in the request body. See `plans/image-generate-page.md` for model-specific details.
 
-services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile.back
-    ports:
-      - "3000:3000"
-    environment:
-      - AGNES_API_KEY=${AGNES_API_KEY}
-    networks:
-      - app-network
+ ### Video Generation
 
-networks:
-  app-network:
-    driver: bridge
-```
+ TBD. Agnes Video API may be asynchronous -- will decide between polling and WebSocket when implementing.
 
-## 开发约定
+ ## Deployment Architecture
 
-1. **Bun 作为包管理器**: 所有依赖安装、构建、启动都用 `bun`
-   - `bun install` - 安装依赖
-   - `bun run dev` - 开发模式
-   - `bun run build` - 构建
+ ### Docker (pending)
 
-2. **去掉鉴权**: API 无需 JWT/认证，直接调用
+ ```
+ Single container: Elysia + Bun
+   / -> dist/index.html (SPA routing)
+   /api/* -> API handlers
+   Port: 3000
+ ```
 
-3. **Docker 优先**: 开发环境可以用 Bun 直接运行，生产环境必须用 Docker
+ ### Backend Static File Serving (Prod)
 
-4. **错误处理**: 
-   - 统一错误格式
-   - 友好错误提示
-   - 日志记录
+ 1. Build frontend `src/` -> `dist/`
+ 2. Copy build output -> `src-back/dist/`
+ 3. Backend `/` serves `dist/index.html`
+ 4. Non-`/api/*` requests redirect to `index.html` (SPA routing)
 
-## 文件结构
+ ### Local Development
 
-```
-ImageVideoGenerate-Agnes/
-├── src/                       # 前端
-│   ├── components/            # UI 组件
-│   ├── pages/                 # 页面路由
-│   ├── index.tsx              # 入口文件
-│   ├── index.css              # 全局样式
-│   └── ...
-├── src-back/                  # 后端
-│   ├── index.ts               # 入口文件
-│   └── ...
-├── index.html                 # 前端 HTML 入口
-├── vite.config.ts            # Vite 配置
-├── Dockerfile.back            # 后端 Docker 镜像构建
-├── docker-compose.yml         # 容器编排
-└── ...
-```
+ ```bash
+ bun install              # Install dependencies
+ bun run dev              # Start frontend + backend concurrently
+ bun run dev:fontend      # Frontend only (Vite, port 3000)
+ bun run dev:backend      # Backend only (Elysia, port 3001)
+ bun run build:fontend    # Build frontend
+ ```
+
+ ## Environment Variables
+
+ | Variable | Required | Default | Description |
+ |----------|----------|---------|-------------|
+ | `AGNES_API_KEY` | Yes | -- | Agnes AI API key |
+ | `BACKEND_PORT` | No | `3001` | Backend server port |
+
+ Copy `.env.example` to `.env` and set `AGNES_API_KEY` before running the app.
+
+ ## Development Conventions
+
+ 1. **Bun as package manager**: all dependency installs, builds, scripts use `bun`
+ 2. **No auth**: API requires no JWT/authentication layer
+ 3. **Module resolution**: `nodenext` -- relative imports in `src-back/` need `.ts` extensions
+ 4. **CORS**: manual headers, no extra dependency
+ 5. **Error handling**: unified error format (`{ error: "message" }`), friendly messages
+ 6. **Agnes Image API**: synchronous, base64 mode; backend thin proxy
+ 7. **Theme**: `data-theme` attribute driven, never class-based; priority: manual > system
+ 8. **i18n**: All user-facing text via `createM()` -- import { createM } from i18n, const m = createM(), use {m.key()} directly in JSX
+
+ ## File Structure
+
+ ```
+ ImageVideoGenerate-Agnes/
+ ├── src/                       # Frontend Solid.js app
+ │   ├── components/            # Reusable UI components
+ │   │   └── Menu/              #   Sidebar (nav links, expand/collapse)
+ │   ├── pages/                 # Page components
+ │   │   ├── ImageGenerate/     #   Image generation page
+ │   │   │   └── components/    #     PromptInput, ModelSelect, ImageUpload, ResultDisplay, SendButton
+ │   │   ├── VideoGenerate/     #   Video generation page (placeholder)
+ │   │   └── Settings/          #   Settings page (planned)
+ │   │       └── components/    #     ThemeSetting, LanguageSetting, ApiKeySetting
+ │   ├── i18n/                  # i18n system (LanguageProvider, createM)
+ │   ├── paraglide/             # Generated messages runtime
+ │   ├── routes/                # Frontend route config
+ │   │   └── index.tsx
+ │   ├── theme/                 # Theme system
+ │   │   ├── theme.css          #   Maps MD3 tokens to Tailwind utilities
+ │   │   ├── utils.ts           #   Theme helpers (setTheme, clearThemeOverride, resolveStoredTheme)
+ │   │   └── themes/            #   Light/dark token definitions
+ │   │       ├── light.css
+ │   │       └── dark.css
+ │   ├── index.tsx              # Entry (theme init + system preference listener)
+ │   ├── index.css              # Global styles (bg-surface on html/body)
+ │   └── Layout.tsx             # Root layout (Menu sidebar + main content)
+ ├── src-back/                  # Backend Elysia server
+ │   ├── index.ts               # Entry (CORS + routes, port 3001)
+ │   ├── routes/                # API routes
+ │   │   ├── ImageGenerateRoute.ts   # POST /api/image/generate
+ │   │   └── VideoGenerateRoute.ts   # (empty stub)
+ │   └── service/               # Business logic
+ │       └── imageService.ts    #   Agnes Image API call (base64 mode)
+ ├── plans/                     # Development plans
+ │   ├── image-generate-page.md
+ │   ├── i18n-paraglide-migration.md
+ │   └── settings-page.md
+ ├── index.html                 # HTML entry (FOWT prevention)
+ ├── vite.config.ts             # Vite config (port 3000, Tailwind plugin)
+ ├── package.json               # Dependencies + scripts (Bun)
+ ├── tsconfig.json              # TypeScript root config
+ ├── tsconfig.app.json          #   Frontend TS config
+ ├── tsconfig.node.json         #   Backend TS config
+ ├── .env.example               # Env template
+ ├── AGENTS.md                  # Project docs
+ ├── GOAL.md                    # This file
+ └── .gitignore
+ ```

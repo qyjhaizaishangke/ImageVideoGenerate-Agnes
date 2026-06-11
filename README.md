@@ -32,17 +32,6 @@ cd ImageVideoGenerate-Agnes
 # 2. 安装依赖
 bun install
 
-# 3. 配置环境变量
-cp .env.example .env
-# 编辑 .env 文件，设置 AGNES_API_KEY
-
-# 4. 启动服务（两个终端）
-# 终端 1: 启动前端
-bun run dev:frontend
-
-# 终端 2: 启动后端
-bun run dev:backend
-```
 
 ### Docker 部署
 
