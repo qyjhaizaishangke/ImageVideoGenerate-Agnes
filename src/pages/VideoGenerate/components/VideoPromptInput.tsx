@@ -2,12 +2,14 @@ import { m } from "../../../i18n";
 import Select from "../../../components/Select";
 import { Film } from "lucide-solid";
 import type { Accessor } from "solid-js";
+import SendButton from "../../ImageGenerate/components/SendButton";
 
 interface VideoPromptInputProps {
   value: Accessor<string>;
   onInput: (value: string) => void;
   onSend: () => void;
   disabled: Accessor<boolean>;
+  loading: Accessor<boolean>;
 }
 
 export default function VideoPromptInput(props: VideoPromptInputProps) {
@@ -46,17 +48,11 @@ export default function VideoPromptInput(props: VideoPromptInputProps) {
           disabled={() => props.disabled()}
           leadingIcon={(p) => <Film class={p.class} />}
         />
-        <button
+        <SendButton
           onClick={props.onSend}
-          disabled={!canSend() || props.disabled()}
-          class="flex items-center gap-1.5 px-4 py-2.5
-                 bg-primary text-on-primary text-label-lg
-                 rounded-corner-full
-                 hover:opacity-90 transition-opacity
-                 disabled:opacity-40 disabled:cursor-not-allowed"
-        >
-          <span>{m.common_send()}</span>
-        </button>
+          disabled={() => !canSend()}
+          loading={props.loading}
+        />
       </div>
     </div>
   );

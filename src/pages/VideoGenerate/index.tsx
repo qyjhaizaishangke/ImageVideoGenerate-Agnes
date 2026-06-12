@@ -16,6 +16,8 @@ const VideoGenerate: Component = () => {
   const isActive = () =>
     pageState().kind === "submitting" || pageState().kind === "processing";
 
+  const loading = () => pageState().kind === "submitting";
+
   const clearPolling = () => {
     if (pollingTimer !== null) {
       clearInterval(pollingTimer);
@@ -127,6 +129,7 @@ const VideoGenerate: Component = () => {
         onInput={setPrompt}
         onSend={handleSend}
         disabled={() => isActive()}
+        loading={loading}
       />
       <VideoResultDisplay state={pageState} onRetry={handleRetry} />
     </div>

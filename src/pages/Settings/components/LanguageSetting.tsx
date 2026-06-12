@@ -1,4 +1,4 @@
-import { m } from "../../../i18n";
+import { m, useLanguage } from "../../../i18n";
  import { Globe } from "lucide-solid";
  import Select from "../../../components/Select";
  import type { AvailableLanguageTag } from "../../../i18n";
