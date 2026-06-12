@@ -1,8 +1,8 @@
-﻿import type { Accessor } from "solid-js";
+import { m } from "../../../i18n";
+import type { Accessor } from "solid-js";
 import ModelSelect from "./ModelSelect";
 import ImageUpload from "./ImageUpload";
 import SendButton from "./SendButton";
-import { createM } from "../../../i18n";
 
 interface PromptInputProps {
   value: Accessor<string>;
@@ -18,7 +18,6 @@ interface PromptInputProps {
 
 export default function PromptInput(props: PromptInputProps) {
   const canSend = () => props.value().trim().length > 0;
-  const m = createM();
 
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {

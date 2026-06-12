@@ -1,6 +1,6 @@
+import { m } from "../../../i18n";
  import Select from "../../../components/Select";
  import type { Accessor } from "solid-js";
- import { createM } from "../../../i18n";
 
  interface ModelSelectProps {
    value: Accessor<string>;
@@ -9,7 +9,6 @@
  }
 
  export default function ModelSelect(props: ModelSelectProps) {
-   const m = createM();
 
    const options = () => [
      { value: "agnes-image-2.0-flash", label: m.model_image20Flash() },

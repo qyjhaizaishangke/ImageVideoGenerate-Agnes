@@ -1,4 +1,4 @@
-﻿# ImageVideoGenerate-Agnes
+# ImageVideoGenerate-Agnes
 
 通过 [Agnes AI](https://agnes-ai.com) API 生成图片和视频的 Web 应用。
 
@@ -34,6 +34,9 @@ bun install
 # 复制环境变量并填入 AGNES_API_KEY
 cp .env.example .env
 
+# 第一次启动前或者添加了i18n的key需要先编译i18n
+bun run gen:i18n
+
 # 同时启动前后端（开发模式）
 bun run dev
 ```
@@ -47,6 +50,7 @@ bun run dev
 | `bun run dev` | 并行启动前端（Vite）和后端（Elysia） |
 | `bun run dev:fontend` | 仅启动前端，端口 3000 |
 | `bun run dev:backend` | 仅启动后端，端口 3001 |
+| `bun run gen:i18n` | 从 `i18n/*.json` 生成 `src/paraglide/` |
 | `bun run build:fontend` | 构建前端到 `dist/` |
 
 ## 环境变量
@@ -109,12 +113,17 @@ ImageVideoGenerate-Agnes/
 │   │   ├── ImageGenerate/   #     图片生成页
 │   │   ├── VideoGenerate/   #     视频生成页（占位）
 │   │   └── Settings/        #     设置页
-│   ├── i18n/                #   国际化
+│   ├── i18n/                #   i18n runtime (LanguageProvider, m 导出)
+│   ├── lib/                  #   Shared lib (locale.ts -- signal 注入)
+│   ├── paraglide/           #   自动生成的消息 (git-ignored)
 │   ├── routes/              #   路由定义
 │   ├── theme/               #   主题系统 (data-theme, MD3 tokens)
 │   ├── index.tsx            #   入口
 │   ├── index.css            #   全局样式
 │   └── Layout.tsx           #   根布局
+├── i18n/                   # 翻译源文件 (en.json / zh.json)
+├── scripts/                # 构建脚本
+│   └── gen_messages.mjs   #   生成 src/paraglide/
 ├── src-back/                # 后端 (Elysia)
 │   ├── routes/              #   API 路由
 │   ├── service/             #   业务逻辑 / AI API 调用

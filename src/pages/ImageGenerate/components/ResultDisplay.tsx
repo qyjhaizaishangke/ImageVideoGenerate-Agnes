@@ -1,6 +1,6 @@
+import { m } from "../../../i18n";
 import { Image, LoaderCircle, CircleAlert } from "lucide-solid";
 import type { Accessor } from "solid-js";
-import { createM } from "../../../i18n";
 
 interface ResultDisplayProps {
   state: Accessor<"idle" | "loading" | "success" | "error">;
@@ -10,7 +10,6 @@ interface ResultDisplayProps {
 }
 
 export default function ResultDisplay(props: ResultDisplayProps) {
-  const m = createM();
 
   const download = () => {
     const b64 = props.imageBase64();

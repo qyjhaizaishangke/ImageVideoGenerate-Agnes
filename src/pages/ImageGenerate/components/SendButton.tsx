@@ -1,6 +1,6 @@
+import { m } from "../../../i18n";
 import { LoaderCircle, SendHorizontal } from "lucide-solid";
 import type { Accessor } from "solid-js";
-import { createM } from "../../../i18n";
 
 interface SendButtonProps {
   onClick: () => void;
@@ -9,7 +9,6 @@ interface SendButtonProps {
 }
 
 export default function SendButton(props: SendButtonProps) {
-  const m = createM();
   return (
     <button
       onClick={props.onClick}

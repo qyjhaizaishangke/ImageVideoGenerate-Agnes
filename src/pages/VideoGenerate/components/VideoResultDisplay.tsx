@@ -1,6 +1,6 @@
+import { m } from "../../../i18n";
 import { Film, LoaderCircle, Download, CircleAlert } from "lucide-solid";
 import type { Accessor } from "solid-js";
-import { createM } from "../../../i18n";
 
 export type PageState =
   | { kind: "idle" }
@@ -16,7 +16,6 @@ interface VideoResultDisplayProps {
 }
 
 export default function VideoResultDisplay(props: VideoResultDisplayProps) {
-  const m = createM();
 
   const download = (url: string) => {
     const link = document.createElement("a");

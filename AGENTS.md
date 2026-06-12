@@ -27,6 +27,9 @@ ImageVideoGenerate-Agnes/
 │   ├── index.tsx               # Frontend entry (theme init + mount)
 │   ├── index.css               # Global styles (body bg-surface, text-on-surface)
 │   └── Layout.tsx              # Root layout (Menu sidebar + <main>)
+├── i18n/                       # Translation source files (en.json / zh.json)
+├── scripts/                    # Build scripts
+│   └── gen_messages.mjs        #   Generate src/paraglide/ from i18n/*.json
 ├── src-back/                   # Backend (Elysia + Bun)
 │   ├── index.ts                # Server entry (CORS, routes, port 3001)
 │   ├── routes/                 # API route definitions
@@ -80,7 +83,7 @@ ImageVideoGenerate-Agnes/
 5. **Use Bun for all package management and scripts**
 6. Build tool: Vite with Rolldown (default for Vite 8.x)
 7. Theme: data-theme attribute driven, never class-based; priority: manual > system preference
-8. i18n: All user-facing text via createM() - import { createM } from i18n, const m = createM(), use {m.key()} directly in JSX (reactive, no t() wrapper)
+8. i18n: All user-facing text via `import { m } from "../../i18n"` -- no createM() needed. Use `{m.key()}` directly in JSX (reactive via module-level Solid signal, no t() wrapper)
 
 
 ## Deployment Architecture
@@ -100,8 +103,8 @@ Implementation:
 | src/ | Frontend Solid.js application source |
 | src/components/ | Reusable UI components |
 | src/pages/ | Page route components |
-| src/i18n/ | i18n system (LanguageProvider, createM, useLanguage) |
-| src/paraglide/ | Translation messages (hand-written Paraglide-style runtime) |
+| src/i18n/ | i18n runtime (LanguageProvider, runtime.js, index.ts -- exports m, languageTag) |
+| src/paraglide/ | Auto-generated translation messages (git-ignored, run `bun run gen:i18n` to regenerate) |
 | src/routes/ | Frontend route config (Solid Router) |
 | src/theme/ | Theme styles (Tailwind + custom CSS tokens) |
 | src/theme/themes/ | Light/dark token definitions |
@@ -157,6 +160,7 @@ bun run build:fontend
 | `bun run dev:fontend` | Vite dev server on port 3000 |
 | `bun run dev:backend` | Elysia server on port 3001 (`bun run src-back/index.ts`) |
 | `bun run build:fontend` | Build frontend to `dist/` |
+| `bun run gen:i18n` | Regenerate `src/paraglide/` from `i18n/*.json` |
 
 ## Environment Variables
 

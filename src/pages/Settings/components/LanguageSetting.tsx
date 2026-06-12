@@ -1,6 +1,6 @@
+import { m } from "../../../i18n";
  import { Globe } from "lucide-solid";
  import Select from "../../../components/Select";
- import { useLanguage, createM } from "../../../i18n";
  import type { AvailableLanguageTag } from "../../../i18n";
  import type { m as _m } from "../../../i18n";
 
@@ -11,7 +11,6 @@
 
  export default function LanguageSetting() {
    const { language, setLanguage: switchLanguage } = useLanguage();
-   const m = createM();
 
    const options = () =>
      LANGUAGES.map(({ value, labelKey }) => ({

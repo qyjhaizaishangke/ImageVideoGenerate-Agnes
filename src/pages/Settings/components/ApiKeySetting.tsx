@@ -1,7 +1,6 @@
- import { createM } from "../../../i18n";
+import { m } from "../../../i18n";
 
  export default function ApiKeySetting() {
-   const m = createM();
 
    return (
      <div class="bg-surface-container rounded-corner-xl p-5 opacity-70">

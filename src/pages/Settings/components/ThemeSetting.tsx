@@ -1,7 +1,7 @@
+import { m } from "../../../i18n";
  import { Sun, Moon, MonitorSmartphone } from "lucide-solid";
  import { createSignal, onMount } from "solid-js";
  import { setTheme, clearThemeOverride } from "../../../theme/utils";
- import { createM } from "../../../i18n";
  import type { m as _m } from "../../../i18n";
 
  type Theme = "light" | "dark";
@@ -15,7 +15,6 @@
 
  export default function ThemeSetting() {
    const [mode, setMode] = createSignal<ThemeMode>("auto");
-   const m = createM();
 
    onMount(() => {
      const stored = localStorage.getItem("app-theme") as Theme | null;

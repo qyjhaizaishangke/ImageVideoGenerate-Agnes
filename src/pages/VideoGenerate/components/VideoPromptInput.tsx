@@ -1,7 +1,7 @@
+import { m } from "../../../i18n";
 import Select from "../../../components/Select";
 import { Film } from "lucide-solid";
 import type { Accessor } from "solid-js";
-import { createM } from "../../../i18n";
 
 interface VideoPromptInputProps {
   value: Accessor<string>;
@@ -11,7 +11,6 @@ interface VideoPromptInputProps {
 }
 
 export default function VideoPromptInput(props: VideoPromptInputProps) {
-  const m = createM();
   const canSend = () => props.value().trim().length > 0;
 
   const handleKeyDown = (e: KeyboardEvent) => {

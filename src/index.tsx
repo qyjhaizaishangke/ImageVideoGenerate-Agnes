@@ -1,8 +1,9 @@
-﻿import { render } from "solid-js/web";
+import { render } from "solid-js/web";
 import { Router } from "@solidjs/router";
 import routes from "./routes";
 import "./index.css";
 import { resolveStoredTheme, setTheme, clearThemeOverride } from "./theme/utils";
+import './lib/locale';
 import { LanguageProvider } from "./i18n";
 
 /* -------------------------------------------------- */

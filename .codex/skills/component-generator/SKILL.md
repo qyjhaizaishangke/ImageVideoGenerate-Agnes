@@ -308,8 +308,8 @@ When using CSS Modules, always reference MD3 tokens:
 All user-facing text must use the project i18n system:
 
 ```tsx
-import { createM } from "../../i18n";
+import { m } from "../../i18n";
 // Inside the component:
-const m = createM();
+// No createM() needed -- m is reactive via module-level signal
 <span>{m.some_key()}</span>  // reactive, no t() wrapper needed
 ```

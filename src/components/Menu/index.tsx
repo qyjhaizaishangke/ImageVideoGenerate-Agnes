@@ -1,3 +1,4 @@
+import { m } from "../../i18n";
  import { A, useLocation } from "@solidjs/router";
  import { createSignal, Show } from "solid-js";
  import {
@@ -7,12 +8,10 @@
    PanelLeftClose,
    PanelLeft,
  } from "lucide-solid";
- import { createM } from "../../i18n";
 
  export default function Menu() {
    const [expanded, setExpanded] = createSignal(true);
    const location = useLocation();
-   const m = createM();
 
    const isActive = (path: string) => {
      if (path === "/") return location.pathname === "/";

@@ -51,7 +51,7 @@
  | Image page UI | Done | PromptInput, ModelSelect, ImageUpload, SendButton, ResultDisplay |
  | Image API (backend) | Done | `POST /api/image/generate` -> Agnes `/v1/images/generations` proxy |
  | Text-to-Image E2E | Done | Full flow: prompt -> backend -> Agnes -> base64 -> frontend display |
- | i18n (Paraglide) | Done | en/zh, LanguageProvider, createM, 23 message keys |
+ | i18n | Done | en/zh, LanguageProvider, 39 message keys |
  | Theme system | Done | `data-theme` attribute, manual > system, 3 modes (Light/Dark/Auto) |
  | Settings page | Pending | Plan: `plans/settings-page.md` -- theme + language + API key placeholder |
  | Image-to-Image | Pending | Phase 2 -- wire ImageUpload base64 to API |
@@ -145,7 +145,7 @@
  5. **Error handling**: unified error format (`{ error: "message" }`), friendly messages
  6. **Agnes Image API**: synchronous, base64 mode; backend thin proxy
  7. **Theme**: `data-theme` attribute driven, never class-based; priority: manual > system
- 8. **i18n**: All user-facing text via `createM()` -- import { createM } from i18n, const m = createM(), use {m.key()} directly in JSX
+ 8. **i18n**: All user-facing text via `import { m } from "../../i18n"` -- no createM(); use `{m.key()}` directly in JSX (reactive via module-level signal)
 
  ## File Structure
 
@@ -160,8 +160,9 @@
  │   │   ├── VideoGenerate/     #   Video generation page (placeholder)
  │   │   └── Settings/          #   Settings page (planned)
  │   │       └── components/    #     ThemeSetting, LanguageSetting, ApiKeySetting
- │   ├── i18n/                  # i18n system (LanguageProvider, createM)
- │   ├── paraglide/             # Generated messages runtime
+ │   ├── i18n/                  # i18n runtime (LanguageProvider, runtime.js, m export)
+│   ├── lib/                    # Shared lib (locale.ts -- Solid signal injection)
+ │   ├── paraglide/             # Auto-generated messages (git-ignored, run gen:i18n)
  │   ├── routes/                # Frontend route config
  │   │   └── index.tsx
  │   ├── theme/                 # Theme system
@@ -173,7 +174,10 @@
  │   ├── index.tsx              # Entry (theme init + system preference listener)
  │   ├── index.css              # Global styles (bg-surface on html/body)
  │   └── Layout.tsx             # Root layout (Menu sidebar + main content)
- ├── src-back/                  # Backend Elysia server
+ ├── i18n/                      # Translation source files (en.json / zh.json)
+├── scripts/                    # Build scripts
+│   └── gen_messages.mjs       #   Generate src/paraglide/ from i18n/*.json
+├── src-back/                  # Backend Elysia server
  │   ├── index.ts               # Entry (CORS + routes, port 3001)
  │   ├── routes/                # API routes
  │   │   ├── ImageGenerateRoute.ts   # POST /api/image/generate

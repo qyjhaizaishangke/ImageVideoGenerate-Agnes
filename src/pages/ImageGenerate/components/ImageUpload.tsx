@@ -1,6 +1,6 @@
-﻿import { Plus } from "lucide-solid";
+import { m } from "../../../i18n";
+import { Plus } from "lucide-solid";
 import { createSignal, type Accessor } from "solid-js";
-import { createM } from "../../../i18n";
 
 interface ImageUploadProps {
   onImageSelected: (base64: string) => void;
@@ -10,7 +10,6 @@ interface ImageUploadProps {
 export default function ImageUpload(props: ImageUploadProps) {
   const [fileName, setFileName] = createSignal<string | null>(null);
   const [thumbnail, setThumbnail] = createSignal<string | null>(null);
-  const m = createM();
   let inputRef: HTMLInputElement | undefined;
 
   const handleFile = (e: Event) => {

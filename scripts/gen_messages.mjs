@@ -1,15 +1,15 @@
-﻿// Regenerate src/paraglide/messages/_index.js and messages.d.ts from project.inlang/messages/*.json
+// Regenerate src/paraglide/messages/_index.js and messages.d.ts from i18n/*.json
 // Usage: bun run scripts/gen_messages.mjs
 
-import { readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, "..");
 
-const enPath = resolve(root, "project.inlang/messages/en.json");
-const zhPath = resolve(root, "project.inlang/messages/zh.json");
+const enPath = resolve(root, "i18n/en.json");
+const zhPath = resolve(root, "i18n/zh.json");
 
 const en = JSON.parse(readFileSync(enPath, "utf-8").replace(/^\uFEFF/, ""));
 const zh = JSON.parse(readFileSync(zhPath, "utf-8").replace(/^\uFEFF/, ""));
@@ -28,7 +28,7 @@ const esc = (s) => JSON.stringify(s).replaceAll("\u2028", "\\u2028").replaceAll(
 // --- _index.js ---
 const jsLines = [
   "/* eslint-disable */",
-  'import { languageTag } from "../runtime.js";',
+  'import { languageTag } from "../../i18n/runtime.js";',
   "",
 ];
 
@@ -47,6 +47,7 @@ jsLines.push("};");
 jsLines.push("");
 
 const jsOut = resolve(root, "src/paraglide/messages/_index.js");
+mkdirSync(dirname(jsOut), { recursive: true });
 writeFileSync(jsOut, jsLines.join("\n") + "\n", "utf-8");
 console.log(`Generated ${jsOut} with ${keys.length} message keys.`);
 
@@ -69,3 +70,7 @@ dtsLines.push("");
 const dtsOut = resolve(root, "src/paraglide/messages.d.ts");
 writeFileSync(dtsOut, dtsLines.join("\n"), "utf-8");
 console.log(`Generated ${dtsOut}.`);
+// --- messages.js (entry re-export) ---
+const msgJsOut = resolve(root, "src/paraglide/messages.js");
+writeFileSync(msgJsOut, "/* eslint-disable */\nexport * from './messages/_index.js';\nexport * as m from './messages/_index.js';\n", "utf-8");
+console.log(`Generated ${msgJsOut}.`);
